@@ -1,4 +1,12 @@
-export declare type Store = any;
-export declare type Selector<V, T> = () => [(store: Store) => V, (store: Store, newVal: T) => Store];
-export declare function useStore<V, T>(selector: Selector<V, T>): (V | ((params: any) => Promise<void>))[];
-export declare function createStore(storeName: string, newStore: Store): void;
+declare type Getter<G, T> = (store: T) => G;
+declare type Setter<S, T> = (store: T, value: S) => T;
+declare type Selector<G, S, T> = [Getter<G, T>, Setter<S, T>, string];
+declare class Store<T = any> {
+    private _name;
+    private _store;
+    constructor(_name: string, _store: T);
+    createSelector<G, S>(getter: Getter<G, T>, setter: Setter<S, T>): Selector<G, S, T>;
+}
+export declare function createStore<T = any>(name: string, newStore: T): Store<T>;
+export declare function useStore<G, S, T>(selector: Selector<G, S, T>): [G, (p: S) => Promise<void> | void];
+export {};

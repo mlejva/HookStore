@@ -46,35 +46,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import { useReducer } from 'react';
-var store = {};
+// export type GlobalStore = any;
+// V is a type of the portion of the store that selector returns.
+// T is a type of the value that the selector accepts and mutates the store with.
+// export type Selector1<V, T> = () => [(store: any) => V, (store: any, newVal: T) => any]
+// let store: GlobalStore = {};
+// function reducer1(state: any, action: any) {
+//   return { ...action.val };
+// }
+// export function useStore1<V, T>(selector: Selector1<V, T>) {
+//   const [state, dispatch] = useReducer(reducer, store);
+//   const [selectVal, setVal] = selector();
+//   async function wrapper(params: any) {
+//     let value = params;
+//     if (typeof params === 'function') {
+//       value = params(selectVal(state));
+//     }
+//     const newState = await setVal(state, value);
+//     dispatch({ val: newState })
+//   }
+//   return [selectVal(state), wrapper];
+// }
+// export function createStore1(storeName: string, newStore: any) {
+//   store = {
+//     ...store,
+//     [storeName]: newStore,
+//   };
+// }
+// export type Getter<T = any> = (store: Store) => T;
+// export type Setter<T = any> = (store: Store, value: T) => Store;
+// export function createSelector<G, S>(getter: Getter<G>, setter: Setter<S>) {
+//   return [getter, setter];
+// }
+var globalStore = {};
+var Store = /** @class */ (function () {
+    function Store(_name, _store) {
+        this._name = _name;
+        this._store = _store;
+        globalStore[this._name] = this._store;
+    }
+    Store.prototype.createSelector = function (getter, setter) {
+        return [getter, setter, this._name];
+    };
+    return Store;
+}());
+var stores = [];
+export function createStore(name, newStore) {
+    var s = new Store(name, newStore);
+    stores.push(s);
+    return s;
+}
 function reducer(state, action) {
-    return __assign({}, action.val);
+    // console.log('REDUCER state', state);
+    // console.log('REDUCER action', action);
+    var _a;
+    return __assign(__assign({}, state), (_a = {}, _a[action.name] = action.value, _a));
 }
 export function useStore(selector) {
-    var _a = useReducer(reducer, store), state = _a[0], dispatch = _a[1];
-    var _b = selector(), selectVal = _b[0], setVal = _b[1];
-    function wrapper(params) {
+    var _a = useReducer(reducer, globalStore), state = _a[0], dispatch = _a[1];
+    var getter = selector[0], setter = selector[1], storeName = selector[2];
+    function wrapper(newValue) {
         return __awaiter(this, void 0, void 0, function () {
-            var value, newState;
+            var newState;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        value = params;
-                        if (typeof params === 'function') {
-                            value = params(selectVal(state));
-                        }
-                        return [4 /*yield*/, setVal(state, value)];
-                    case 1:
-                        newState = _a.sent();
-                        dispatch({ val: newState });
-                        return [2 /*return*/];
-                }
+                newState = setter(state[storeName], newValue);
+                dispatch({ name: storeName, value: newState });
+                return [2 /*return*/];
             });
         });
     }
-    return [selectVal(state), wrapper];
-}
-export function createStore(storeName, newStore) {
-    var _a;
-    store = __assign(__assign({}, store), (_a = {}, _a[storeName] = newStore, _a));
+    // TODO: Don't use state but only a substore for this selector
+    return [getter(state[storeName]), wrapper];
 }
