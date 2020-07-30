@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react';
 import { useStore } from 'hookstore';
-import { selectTasks } from './Tasks/tasks.store';
+import { selectAllTasks } from './Task/tasks.store';
 
 function TasksCounter() {
-  const [tasks] = useStore(selectTasks);
+  const [tasks] = useStore(selectAllTasks);
 
   useEffect(() => {
     console.log('counter tasks', tasks);
-  }, [tasks.all]);
-
-  useEffect(() => {
-    console.log('Neste object change -', tasks.nested.object.alsoNoUpdate);
-  }, [tasks.nested.object.alsoNoUpdate])
+  }, [tasks]);
 
   return (
     <span>
-      Total tasks: {tasks.all.length}
+      Total tasks: {tasks.length}
     </span>
   );
 }
