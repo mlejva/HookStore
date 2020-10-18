@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from 'react';
+import { useStore } from './hookstore';
+import { TodoItem, selectWorkTodos } from './Task/tasks.store';
 
-import { useStore } from 'hookstore';
-import { Task as TaskType, selectAllTasks, selectCompletedTasks } from './Task/tasks.store';
+// import { useStore } from 'hookstore';
+// import { Task as TaskType, selectAllTasks, selectCompletedTasks } from './Task/tasks.store';
 
 import Task from './Task';
 import TasksCounter from './TasksCounter';
 
 function App() {
-  const [tasks, setTasks] = useStore(selectAllTasks);
-  const [completedTasks, setCompletedTasks] = useStore(selectCompletedTasks);
+  const [workTasks, addWorkTask] = useStore(selectWorkTodos);
 
-  useEffect(() => {
-    console.log('Tasks', tasks);
-  }, [tasks]);
+  // const [tasks, setTasks] = useStore(selectAllTasks);
+  // const [completedTasks, setCompletedTasks] = useStore(selectCompletedTasks);
+
+  // useEffect(() => {
+  //   console.log('Tasks', tasks);
+  // }, [tasks]);
 
   function addTask() {
-    const newTask = {
+    const newTask: TodoItem = {
       title: 'Task -' + new Date().toISOString(),
       isCompleted: Math.random() > 0.5,
     };
-    setTasks((current) => current.concat(newTask));
+    addWorkTask(newTask);
+    console.log('Added new task');
+    // setTasks((current) => current.concat(newTask));
   }
 
-  function handleTaskCompleted(t: TaskType) {
-    setCompletedTasks(current => current.concat(t));
+  function handleTaskCompleted(t: TodoItem) {
+    // setCompletedTasks(current => current.concat(t));
   }
 
   return (
@@ -36,12 +42,12 @@ function App() {
         Add task
       </button>
 
-      <TasksCounter />
+      {/* <TasksCounter /> */}
 
 
       <h2>All tasks</h2>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {tasks.map(t => (
+        {workTasks.map(t => (
           <Task
             key={t.title}
             task={t}

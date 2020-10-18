@@ -1,9 +1,9 @@
 import React from 'react';
-import { Task as TaskType } from './tasks.store';
+import { TodoItem } from './tasks.store';
 
 interface TaskProps {
-  task: TaskType;
-  onTaskCompleted: (t: TaskType) => void;
+  task: TodoItem;
+  onTaskCompleted: (t: TodoItem) => void;
 }
 
 function Task(props: TaskProps) {
