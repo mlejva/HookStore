@@ -14,7 +14,7 @@ interface TodoSlice {
 function initialState(): TodoSlice {
   return {
       work: [],
-      personal: [],          
+      personal: [],
   }
 }
 
@@ -28,7 +28,30 @@ export const selectWorkTodos = todo.createSelector<TodoItem[], TodoItem>(
   })
 );
 
-// addWorkTodo works here as a reducer dispatch. This dispatch is then handled 
+export const selectAllTodos = todo.createSelector<TodoSlice, TodoItem>(
+  slice => slice,
+  (slice, a) => slice,
+);
+
+export interface Project {
+  name: string;
+}
+interface ProjectsSlice {
+  projects: Project[];
+  activeProject: Project | undefined;
+}
+const initialProjState: ProjectsSlice = {
+  projects: [],
+  activeProject: undefined,
+}
+
+const projects = createSlice('project', initialProjState);
+export const selectActiveProject = projects.createSelector<Project | undefined, Project>(
+  slice => slice.activeProject,
+  (slice, project) => ({ ...slice, activeProject: project }),
+);
+
+// addWorkTodo works here as a reducer dispatch. This dispatch is then handled
 // by the workTodosSelector's setter. As mentioned above, this setter is
 // basically an action handler for this dispatch.
 // const [workTodos, addWorkTodo] = useStore(workTodosSelector);
