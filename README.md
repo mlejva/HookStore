@@ -79,8 +79,13 @@ const tasks = createSlice('tasks', initialTasksState());
 // Seter describes how to add new data to the slice.
 export const selectTasks = tasks.createSelector<Task[], Task>(
   // Getter.
+  // Automatically gets passed the slice we defined and returns Task[].
   slice => slice.tasks,
+
   // Setter.
+  // Automatically gets passed the slice we defined earlier as the first argument.
+  // The second argument is a value passed by a developer. Here it's Task.
+  // Setter must return a new version of the slice.
   (slice, newTask) => ({
     ...slice,
     tasks: [...slice.tasks, newTask],
@@ -97,7 +102,10 @@ import { selectTasks, Task } from './tasks.store';
 
 function Tasks() {
   // Here we pass the imported selector to the HookStore's hook.
-  // It returns slightly adjusted version of the getter and the setter we defined earlier.
+  // It returns two values.
+  // The first one is exactly what returns the getter we defined earlier.
+  // The second one is a slightly adjusted version of the setter we defined earlier that takes
+  // a single argument of a new Task.
   const [allTasks, addNewTask] = useStore(selectTasks);
 
   function handleButtonClick() {
