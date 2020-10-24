@@ -74,5 +74,5 @@ function HookStoreProvider(props: HookStoreProviderProps) {
   );
 }
 
-export default ReducerProvider;
+export default HookStoreProvider;
 

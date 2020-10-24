@@ -39,5 +39,5 @@ function HookStoreProvider(props) {
     const [state, dispatch] = useReducer(reduce, initialState);
     return (React.createElement(ReducerContext.Provider, { value: { state, dispatch } }, props.children));
 }
-export default ReducerProvider;
+export default HookStoreProvider;
 //# sourceMappingURL=index.js.map
