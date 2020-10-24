@@ -1,7 +1,9 @@
 {
-  "name": "hookstore",
-  "version": "1.0.0",
+  "name": "@grobapp/hookstore",
+  "version": "0.0.4",
   "description": "",
+  "keywords": ["react", "store", "global", "hooks", "state", "typescript", "ts"],
+  "author": "FoundryLabs, Inc.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -12,19 +14,19 @@
     "type": "git",
     "url": "git+https://github.com/mlejva/HookStore.git"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mlejva/HookStore/issues"
   },
   "homepage": "https://github.com/mlejva/HookStore#readme",
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8"
+    "@types/react-dom": "^16.9.8",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

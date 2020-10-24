@@ -1,12 +1,12 @@
 import React from 'react';
-import { TodoItem } from './tasks.store';
+import { Task } from './tasks.store';
 
-interface TaskProps {
-  task: TodoItem;
-  onTaskCompleted: (t: TodoItem) => void;
+interface TaskItemProps {
+  task: Task;
+  onTaskCompleted: (t: Task) => void;
 }
 
-function Task(props: TaskProps) {
+function TaskItem(props: TaskItemProps) {
   return (
     <div>
       {props.task.title}
@@ -23,4 +23,5 @@ function Task(props: TaskProps) {
   );
 }
 
-export default Task;
+export default TaskItem;
+

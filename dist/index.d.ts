@@ -1,14 +1,19 @@
-declare type Getter<G, T> = (store: T) => G;
-declare type Setter<S, T> = (store: T, value: S) => void;
-declare type Selector<G, S, T> = [Getter<G, T>, Setter<S, T>, string];
-declare class Store<T = any> {
-    private _name;
-    private _store;
-    constructor(_name: string, _store: T);
-    createSelector<G, S>(getter: Getter<G, T>, setter?: Setter<S, T>): Selector<G, S, T>;
+import React from 'react';
+interface State {
+    [name: string]: any;
 }
-export declare function createStore<T = any>(name: string, newStore: T): Store<T>;
-declare type SetterWrapperValue<S> = S | ((value: S) => S);
-declare type SetterWrapper<S> = (value: SetterWrapperValue<S>) => void;
-export declare function useStore<G, S, T>(selector: Selector<G, S, T>): [G, SetterWrapper<S>];
-export {};
+declare type Noop = () => void;
+declare type Getter<TSlice, TGetterReturn> = (slice: TSlice) => TGetterReturn;
+declare type Setter<TSlice, TNewValue> = (slice: TSlice, newValue: TNewValue) => TSlice;
+declare type SliceName = string;
+declare type Selector<TGetterReturn, TNewValue, TSlice = any> = [Getter<TSlice, TGetterReturn>, Setter<TSlice, TNewValue>, SliceName];
+export declare const ReducerContext: React.Context<State>;
+export declare function useStore<TSlice, TGetterReturn, TNewValue>(selector: Selector<TGetterReturn, TNewValue, TSlice>): [TGetterReturn, (newValue: TNewValue) => void];
+export declare function createSlice<TSlice>(sliceName: SliceName, initialValue: TSlice): {
+    createSelector: <TGetterReturn, TNewValue = null>(getter: Getter<TSlice, TGetterReturn>, setter?: Noop | Setter<TSlice, TNewValue>) => Selector<TGetterReturn, TNewValue, TSlice>;
+};
+interface ReducerProviderProps {
+    children: React.ReactNode;
+}
+declare function ReducerProvider(props: ReducerProviderProps): JSX.Element;
+export default ReducerProvider;

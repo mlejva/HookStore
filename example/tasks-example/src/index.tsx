@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ReducerProvider from './hookstore';
+import ReducerProvider from '@grobapp/hookstore';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

@@ -1,64 +1,79 @@
 import React, { useEffect, useState } from 'react';
-import { useStore } from './hookstore';
-import { Project, TodoItem, selectWorkTodos, selectActiveProject } from './Task/tasks.store';
+import { useStore } from '@grobapp/hookstore';
+import {
+  Task,
+  selectTasks,
+  selectCompletedTasks,
+  selectCategories,
+} from './TaskItem/tasks.store';
 
-// import { useStore } from 'hookstore';
-// import { Task as TaskType, selectAllTasks, selectCompletedTasks } from './Task/tasks.store';
-
-import Task from './Task';
+import TaskItem from './TaskItem';
 import TasksCounter from './TasksCounter';
 
 function App() {
-  const [workTasks, addWorkTask] = useStore(selectWorkTodos);
-  const [activeProject, setActiveProject] = useStore(selectActiveProject);
 
-  useEffect(() => {
-    console.log('active', activeProject);
-  }, [activeProject])
+  /*
+  const [
+    [allTasks, addTask],
+    [,completeTask],
+    [categories]
+  ] = useStore(
+    selectTasks,
+    selectCompletedTasks,
+    selectCategories,
+  );
+  */
 
-  // const [tasks, setTasks] = useStore(selectAllTasks);
-  // const [completedTasks, setCompletedTasks] = useStore(selectCompletedTasks);
+  const [allTasks, addTask] = useStore(selectTasks);
+  const [,completeTask] = useStore(selectCompletedTasks);
+  const [categories] = useStore(selectCategories);
 
-  // useEffect(() => {
-  //   console.log('Tasks', tasks);
-  // }, [tasks]);
-
-  function addTask() {
-    const newTask: TodoItem = {
+  function handleAddTaskClick() {
+    const newTask: Task = {
+      id: `${Math.random()}`,
       title: 'Task -' + new Date().toISOString(),
       isCompleted: Math.random() > 0.5,
+      category: {id: 'personal', title: 'Personal' },
     };
-    addWorkTask(newTask);
-    // setTasks((current) => current.concat(newTask));
-
-    const proj: Project = {
-      name: 'New project! ' + Math.random(),
-    };
-    setActiveProject(proj);
+    addTask(newTask);
   }
 
-  function handleTaskCompleted(t: TodoItem) {
-    // setCompletedTasks(current => current.concat(t));
+  function handleTaskCompleted(t: Task) {
+    completeTask(t.id);
   }
 
   return (
     <div>
-      App
-
       <button
-        onClick={addTask}
+        onClick={handleAddTaskClick}
       >
         Add task
       </button>
 
+      <br/>
       <TasksCounter />
+      <br/>
 
+      <br/>
+      <h3>Categories</h3>
+      {categories.length === 0 && <span>No categories yet</span>}
+      {categories.length > 0 &&
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {categories.map(c => (
+            <div
+              key={c.id}
+            >{c.title}
+            </div>
+          ))}
+        </div>
+      }
+      <br/>
 
       <h2>All tasks</h2>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {workTasks.map(t => (
-          <Task
-            key={t.title}
+        {allTasks.map(t => (
+          <TaskItem
+            key={t.id}
             task={t}
             onTaskCompleted={handleTaskCompleted}
           />
