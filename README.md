@@ -137,7 +137,7 @@ function Tasks() {
       title: 'Task - ' + new Date().toISOString(),
       isCompleted: Math.random() > 0.5,
     };
-    // Here we're using the getter to add a new task to the global state.
+    // Here we're using the setter to add a new task to the global state.
     addNewTask(newTask);
   }
 
