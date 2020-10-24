@@ -111,7 +111,7 @@ function Tasks() {
   function handleButtonClick() {
     const newTask: Task = {
       id: `${Math.random()}`,
-      title: 'Task -' + new Date().toISOString(),
+      title: 'Task - ' + new Date().toISOString(),
       isCompleted: Math.random() > 0.5,
     };
     // Here we're using the getter to add a new task to the global state.
