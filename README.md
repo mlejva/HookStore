@@ -34,11 +34,33 @@ The main concept of HookStore is a selector. Selector is a pair of getter and se
 
 Let's say we are building a todo app. We want to keep our tasks in the global state. This is how you'd achieve that with HookStore.
 
-1. Create a separate `task.store.ts` file.
-2. Define types for the `Task` item and for a slice of the global state. The slice describes everything we need for our tasks.
+1. In your `index.tsx`, wrap the whole app the HookStore's provider. Without this, you can't use HookStore in the lower components.
+
+```tsx
+// Inside the index.tsx file.
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+
+// The HookStore's provider that makes sure you can use HookStore in your components.
+import HookStoreProvider from '@grobapp/hookstore';
+
+ReactDOM.render(
+  <HookStoreProvider>
+    <App />
+  </HookStoreProvider>,
+  document.getElementById('root')
+);
+```
+
+2. Create a separate `task.store.ts` file.
+3. Define types for the `Task` item and for a slice of the global state. The slice describes everything we need for our tasks.
 
 ```typescript
-// Inside the task.store.ts file
+// Inside the task.store.ts file.
+
 import { createSlice } from '@grobapp/hookstore';
 
 export interface Task {
@@ -63,10 +85,10 @@ function initialTasksState(): TasksSlice {
 const tasks = createSlice('tasks', initialTasksState());
 ```
 
-3. Define selectors.
+4. Define selectors.
 
 ```typescript
-// Inside the task.store.ts file
+// Inside the task.store.ts file.
 
 // Previous code
 ...
@@ -93,10 +115,11 @@ export const selectTasks = tasks.createSelector<Task[], Task>(
 );
 ```
 
-4. Access global state in the component.
+5. Access global state in the component.
 
 ```tsx
-// Inside the Tasks.tsx file
+// Inside the Tasks.tsx file.
+
 import { useStore } from '@grobapp/hookstore';
 import { selectTasks, Task } from './tasks.store';
 

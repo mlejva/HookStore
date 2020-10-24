@@ -35,7 +35,7 @@ export function createSlice(sliceName, initialValue) {
     };
     return { createSelector };
 }
-function ReducerProvider(props) {
+function HookStoreProvider(props) {
     const [state, dispatch] = useReducer(reduce, initialState);
     return (React.createElement(ReducerContext.Provider, { value: { state, dispatch } }, props.children));
 }

@@ -61,11 +61,11 @@ export function createSlice<TSlice>(sliceName: SliceName, initialValue: TSlice) 
   return { createSelector };
 }
 
-interface ReducerProviderProps {
+interface HookStoreProviderProps {
   children: React.ReactNode;
 }
 
-function ReducerProvider(props: ReducerProviderProps) {
+function HookStoreProvider(props: HookStoreProviderProps) {
   const [state, dispatch] = useReducer(reduce, initialState);
   return (
     <ReducerContext.Provider value={{state, dispatch}}>

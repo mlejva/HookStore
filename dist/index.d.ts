@@ -12,8 +12,4 @@ export declare function useStore<TSlice, TGetterReturn, TNewValue>(selector: Sel
 export declare function createSlice<TSlice>(sliceName: SliceName, initialValue: TSlice): {
     createSelector: <TGetterReturn, TNewValue = null>(getter: Getter<TSlice, TGetterReturn>, setter?: Noop | Setter<TSlice, TNewValue>) => Selector<TGetterReturn, TNewValue, TSlice>;
 };
-interface ReducerProviderProps {
-    children: React.ReactNode;
-}
-declare function ReducerProvider(props: ReducerProviderProps): JSX.Element;
 export default ReducerProvider;
